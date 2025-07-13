@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-compat.url = "github:edolstra/flake-compat";
     flake-utils.url = "github:numtide/flake-utils";
     crane = {
       url = "github:ipetkov/crane";
@@ -253,7 +254,7 @@
             else
               echo "Warning: tests/ca.crt not found"
             fi
-            
+
             # Set SSL cert environment variables to use the combined bundle
             export SSL_CERT_FILE="$COMBINED_CERT_FILE"
             export NIX_SSL_CERT_FILE="$COMBINED_CERT_FILE"
@@ -263,7 +264,7 @@
             alias c=cargo
             alias j=just
             alias lg=lazygit
-            
+
             # Ensure the script can find modules in the current directory and parent directory
             export LUA_PATH="./?.lua;../?.lua;$(lua -e 'print(package.path)')"
           '' + lib.optionalString stdenv.isDarwin ''
