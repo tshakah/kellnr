@@ -449,7 +449,7 @@
           };
 
           config = mkIf cfg.enable {
-            warnings = lib.optional (cfg.configFile != null && cfg.settings != { }) 
+            warnings = lib.optional (cfg.configFile != null && cfg.settings != { })
               "services.kellnr: Both configFile and settings are specified. configFile takes precedence and settings will be ignored.";
 
             users.users.${cfg.user} = {
@@ -492,7 +492,12 @@
                       (pkgs.formats.toml { }).generate "kellnr.toml" cfg.settings;
                 in
                 ''
-                  exec ${cfg.package}/bin/kellnr --config ${configFile}
+                  mkdir -p ${cfg.dataDir}/config
+                  ln -sf ${cfg.package}/bin/config/default.toml ${cfg.dataDir}/config/default.toml
+                  ln -sf ${cfg.package}/bin/static ${cfg.dataDir}/
+                  ln -sf ${configFile} ${cfg.dataDir}/config/local.toml
+
+                  exec ${cfg.package}/bin/kellnr
                 '';
             };
           };
