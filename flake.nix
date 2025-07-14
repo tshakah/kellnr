@@ -360,6 +360,13 @@
               type = types.submodule {
                 freeformType = (pkgs.formats.toml { }).type;
                 options = {
+                  docs = {
+                    enabled = mkOption {
+                      type = types.bool;
+                      default = false;
+                      description = "Enable doc generation on publish";
+                    };
+                  };
                   registry = {
                     data_dir = mkOption {
                       type = types.path;
@@ -481,6 +488,9 @@
                 ProtectSystem = "strict";
                 ProtectHome = true;
                 ReadWritePaths = [ cfg.dataDir ];
+
+                # For doc generation
+                Environment = "PATH=${pkgs.rustc}/bin:${pkgs.gcc}/bin:${pkgs.coreutils}/bin";
               };
 
               script =
